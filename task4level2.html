@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Authentication</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+    }
+
+    .container {
+      width: 400px;
+    }
+
+    .form-box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    .form-box h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-box input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .form-box button {
+      width: 95%;
+      padding: 12px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 8px;
+      background: #2575fc;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .form-box button:hover {
+      background: #1a5fd8;
+    }
+
+    .form-box p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .form-box a {
+      color: #2575fc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Registration Form -->
+    <div class="form-box" id="register-box">
+      <h2>Register</h2>
+      <input type="text" id="reg-username" placeholder="Enter Username">
+      <input type="password" id="reg-password" placeholder="Enter Password">
+      <button onclick="register()">Register</button>
+      <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+    </div>
+
+    <!-- Login Form -->
+    <div class="form-box hidden" id="login-box">
+      <h2>Login</h2>
+      <input type="text" id="login-username" placeholder="Enter Username">
+      <input type="password" id="login-password" placeholder="Enter Password">
+      <button onclick="login()">Login</button>
+      <p>Don't have an account? <a href="#" onclick="showRegister()">Register</a></p>
+    </div>
+
+    <!-- Secured Page -->
+    <div class="form-box hidden" id="secure-box">
+      <h2>Welcome, <span id="user-name"></span> 🎉</h2>
+      <p>You have successfully logged in to the secured page.</p>
+      <button onclick="logout()">Logout</button>
+    </div>
+
+  </div>
+
+  <script>
+    // Show login form
+    function showLogin() {
+      document.getElementById("register-box").classList.add("hidden");
+      document.getElementById("login-box").classList.remove("hidden");
+    }
+
+    // Show register form
+    function showRegister() {
+      document.getElementById("login-box").classList.add("hidden");
+      document.getElementById("register-box").classList.remove("hidden");
+    }
+
+    // Register user
+    function register() {
+      let username = document.getElementById("reg-username").value;
+      let password = document.getElementById("reg-password").value;
+
+      if (username === "" || password === "") {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
+
+      alert("Registration successful! Please login now.");
+      showLogin();
+    }
+
+    // Login user
+    function login() {
+      let username = document.getElementById("login-username").value;
+      let password = document.getElementById("login-password").value;
+
+      let storedUser = localStorage.getItem("username");
+      let storedPass = localStorage.getItem("password");
+
+      if (username === storedUser && password === storedPass) {
+        document.getElementById("login-box").classList.add("hidden");
+        document.getElementById("secure-box").classList.remove("hidden");
+        document.getElementById("user-name").innerText = username;
+      } else {
+        alert("Invalid username or password!");
+      }
+    }
+
+    // Logout user
+    function logout() {
+      document.getElementById("secure-box").classList.add("hidden");
+      document.getElementById("login-box").classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
